@@ -130,10 +130,15 @@
     <ClCompile Include="Proyecto-Colas-de-Prioridad-Estructuras-de-Datos.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Area.h" />
     <ClInclude Include="Heap_Priority_Queue.h" />
     <ClInclude Include="Min_Heap.h" />
     <ClInclude Include="Pair.h" />
     <ClInclude Include="Priority_Queue.h" />
+    <ClInclude Include="Servicios.h" />
+    <ClInclude Include="Tiquete.h" />
+    <ClInclude Include="Usuario.h" />
+    <ClInclude Include="Ventanilla.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
