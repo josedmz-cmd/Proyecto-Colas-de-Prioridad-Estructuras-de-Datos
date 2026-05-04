@@ -1,5 +1,4 @@
 #pragma once
-#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include <string>
 #include <ctime>
@@ -15,70 +14,92 @@ private:
     static int consecutivo;
     time_t horaSolicitado;
     time_t horaAtendido;
+    int tiempoEspera;
     int prioridadFinal;
     int prioridadUsuario;
     int prioridadServicio;
 
 public:
-    Tiquete(string codigoArea, int prioridadUsuario, int prioridadServicio, time_t horaSolicitado) {
+    Tiquete() {
+        codigo = "";
+        codigoArea = "";
+        consecutivo++;
+        horaSolicitado = time(nullptr);
+        horaAtendido = 0;
+        tiempoEspera = 0;
+        prioridadUsuario = 0;
+        prioridadServicio = 0;
+        prioridadFinal = 0;
+    }
+    Tiquete(string codigoArea, int prioridadUsuario, int prioridadServicio) {
         this->codigoArea = codigoArea;
         this->prioridadUsuario = prioridadUsuario;
         this->prioridadServicio = prioridadServicio;
-        this->horaSolicitado = horaSolicitado;
-        this->horaAtendido = 0;
         consecutivo++;
         this->codigo = codigoArea + "-" + std::to_string(consecutivo);
-        this->prioridadFinal = prioridadUsuario + prioridadServicio;
+        horaSolicitado = time(nullptr);
+        horaAtendido = 0;
+        tiempoEspera = 0;
+        prioridadFinal = prioridadUsuario + prioridadServicio;
     }
 
     ~Tiquete() {}
 
-    string getCodigo() {
-        return codigo;
+    void atender() {
+        horaAtendido = time(nullptr);
+        tiempoEspera = (int)difftime(horaAtendido, horaSolicitado);
     }
 
-    string getCodigoArea() {
-        return codigoArea;
-    }
-
-    int getPrioridadFinal() {
+    int getPrioridadFinal() const {
         return prioridadFinal;
     }
 
-    int getPrioridadUsuario() {
-        return prioridadUsuario;
+    string getCodigo() const {
+        return codigo;
     }
 
-    int getPrioridadServicio() {
-        return prioridadServicio;
+    string getCodigoArea() const {
+        return codigoArea;
     }
 
-    time_t getHoraSolicitado() {
-        return horaSolicitado;
+    int getTiempoEspera() const {
+        return tiempoEspera;
     }
 
-    time_t getHoraAtendido() {
-        return horaAtendido;
+    void printTime(time_t t) const {
+        if (t == 0) {
+            cout << "N/A";
+            return;
+        }
+        tm info;
+        localtime_s(&info, &t);
+        cout << (info.tm_year + 1900) << "-"
+            << (info.tm_mon + 1) << "-"
+            << info.tm_mday << " "
+            << info.tm_hour << ":"
+            << info.tm_min << ":"
+            << info.tm_sec;
     }
 
-    void atender() {
-        horaAtendido = time(nullptr);
-    }
-
-    double getTiempoEspera() {
-        if (horaAtendido == 0)
-            return difftime(time(nullptr), horaSolicitado);
-        return difftime(horaAtendido, horaSolicitado);
-    }
-
-    void print() {
-        cout << "Tiquete: " << codigo << endl;
-        cout << "Area: " << codigoArea << endl;
-        cout << "Prioridad final: " << prioridadFinal << endl;
-        cout << "Hora solicitado: " << ctime(&horaSolicitado);        
-        if (horaAtendido != 0)
-            cout << "Hora atendido: " << ctime(&horaAtendido);
+    void print() const {
+        cout << "TIQUETE: " << codigo << endl;
+        cout << "AREA: " << codigoArea << endl;
+        cout << "PRIORIDAD FINAL: " << prioridadFinal << endl;
+        cout << "SOLICITADO: ";
+        printTime(horaSolicitado);
+        cout << endl;
+        cout << "ATENDIDO: ";
+        printTime(horaAtendido);
+        cout << endl;
+        cout << "TIEMPO ESPERA: " << tiempoEspera << " s" << endl;
         cout << "------------------------" << endl;
+    }
+
+    friend std::ostream& operator<<(std::ostream& os, const Tiquete& t) {
+        os << "(Codigo: " << t.codigo
+            << ", Area: " << t.codigoArea
+            << ", Prioridad: " << t.prioridadFinal << ")";
+        return os;
     }
 };
 
