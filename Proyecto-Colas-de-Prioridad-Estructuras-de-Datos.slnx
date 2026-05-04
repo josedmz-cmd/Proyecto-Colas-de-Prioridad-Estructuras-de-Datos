@@ -3,5 +3,5 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
-  <Project Path="Proyecto-Colas-de-Prioridad-Estructuras-de-Datos.vcxproj" />
+  <Project Path="Proyecto-Colas-de-Prioridad-Estructuras-de-Datos.vcxproj" Id="8bbe972e-e1fd-41c9-a03f-f1365b6efaae" />
 </Solution>
