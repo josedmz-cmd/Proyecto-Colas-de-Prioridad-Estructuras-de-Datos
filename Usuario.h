@@ -34,6 +34,30 @@ public:
 		prioridad = p;
 	}
 
+	bool operator<(const Usuario& otro) const {
+		return prioridad < otro.prioridad;
+	}
+
+	bool operator>(const Usuario& otro) const {
+		return prioridad > otro.prioridad;
+	}
+
+	bool operator<=(const Usuario& otro) const {
+		return prioridad <= otro.prioridad;
+	}
+
+	bool operator>=(const Usuario& otro) const {
+		return prioridad >= otro.prioridad;
+	}
+
+	bool operator==(const Usuario& otro) const {
+		return descripcion == otro.descripcion;
+	}
+
+	bool operator!=(const Usuario& otro) const {
+		return descripcion != otro.descripcion;
+	}
+
 	friend ostream& operator<<(ostream& os, const Usuario& u) {
 		os << u.descripcion << " (Prioridad: " << u.prioridad << ")";
 		return os;
