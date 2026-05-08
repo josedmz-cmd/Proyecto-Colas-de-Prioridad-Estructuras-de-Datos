@@ -1,3 +1,94 @@
+/*
+Jared Andre Hemmings Chinchilla
+José Daniel Mora Zúñiga
+
+    CLASE TIQUETE
+    La clase Tiquete representa un sistema de gestión de tickets para atención de usuarios en distintas áreas de servicio.
+
+    Cada objeto de tipo Tiquete almacena información relacionada con:
+    - Código único del tiquete.
+    - Área de atención.
+    - Prioridad asignada.
+    - Hora en que fue solicitado.
+    - Hora en que fue atendido.
+    - Tiempo total de espera.
+
+    FUNCIONAMIENTO
+    
+    1. CREACIÓN DEL TIQUETE
+       - Al crear un tiquete se genera automáticamente:
+            * Un consecutivo único.
+            * El código del tiquete.
+            * La hora de solicitud usando time(nullptr).
+            * La prioridad final.
+
+       - El código se forma así:
+            AREA-CONSECUTIVO
+
+         Ejemplo:
+            CAJ-101
+
+    2. PRIORIDAD
+       - La prioridad final se obtiene sumando:
+            prioridadUsuario + prioridadServicio
+       - Esto permite ordenar los tiquetes según importancia.
+
+    3. ATENCIÓN DEL TIQUETE
+       - Cuando el método atender() es llamado:
+            * Se registra la hora actual como hora de atención.
+            * Se calcula el tiempo de espera en segundos usando difftime().
+
+    4. VISUALIZACIÓN
+       - El método print() muestra toda la información del tiquete.
+       - El operador << permite imprimir el objeto directamente con cout.
+
+    MÉTODOS PRINCIPALES Y LO QUE DEVUELVEN
+
+    atender()
+        -> No devuelve nada (void).
+        -> Registra la hora de atención y calcula el tiempo de espera.
+
+    getPrioridadFinal()
+        -> Devuelve un int.
+        -> Retorna la prioridad total del tiquete.
+
+    getCodigo()
+        -> Devuelve un string.
+        -> Retorna el código único del tiquete.
+
+    getCodigoArea()
+        -> Devuelve un string.
+        -> Retorna el código del área del servicio.
+
+    getTiempoEspera()
+        -> Devuelve un int.
+        -> Retorna el tiempo de espera.
+
+    getHoraSolicitud()
+        -> Devuelve un time_t.
+        -> Retorna la hora en que el tiquete fue solicitado.
+
+    getHoraAtendido()
+        -> Devuelve un time_t.
+        -> Retorna la hora en que el tiquete fue atendido.
+
+    setHoraAtendido(time_t hora)
+        -> No devuelve nada (void).
+        -> Modifica manualmente la hora de atención.
+
+    printTime(time_t t)
+        -> No devuelve nada (void).
+        -> Muestra una fecha y hora en formato legible.
+
+    print()
+        -> No devuelve nada (void).
+        -> Imprime toda la información del tiquete.
+
+    operator<<
+        -> Devuelve un ostream&.
+        -> Permite imprimir el objeto usando cout.
+*/
+
 #pragma once
 #include <iostream>
 #include <string>
