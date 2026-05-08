@@ -15,6 +15,8 @@ private:
     int ventanillasCount;
     string descripcion;
     string codigo;
+    int totalTiquetesAtendidos;
+    int sumaTiemposEspera;
 
     Heap_Priority_Queue<Tiquete>* cola;
     Ventanilla* ventanillas;
@@ -25,6 +27,8 @@ public:
         this->codigo = codigo;
         this->descripcion = descripcion;
         this->ventanillasCount = ventanillasCount;
+        totalTiquetesAtendidos = 0;
+        sumaTiemposEspera = 0;
         cola = new Heap_Priority_Queue<Tiquete>();
         ventanillas = new Ventanilla[ventanillasCount];
         for (int i = 0; i < ventanillasCount; i++) {
@@ -50,6 +54,10 @@ public:
         for (int i = 0; i < ventanillasCount; i++) {
             if (!ventanillas[i].estaOcupada()) {
                 Tiquete t = cola->removeMin();
+                time_t ahora = time(nullptr);
+                int tiempoEspera = (int)difftime(ahora, t.getHoraSolicitud());
+                totalTiquetesAtendidos++;
+                sumaTiemposEspera += tiempoEspera;
                 Tiquete* nuevo = new Tiquete(t);
                 ventanillas[i].atenderTiquete(nuevo);
                 cout << "Asignado " << t.getCodigo()
@@ -70,11 +78,52 @@ public:
         ventanillas[index].liberar();
     }
 
+    string getCodigo() const {
+        return codigo;
+    }
+
+    string getDescripcion() const {
+        return descripcion;
+    }
+
+    string getNombre() const {
+        return nombre;
+    }
+
+    int getNumVentanillas() const {
+        return ventanillasCount;
+    }
+
+    Ventanilla* getVentanilla(int i) {
+        if (i >= 0 && i < ventanillasCount) {
+            return &ventanillas[i];
+        }
+        return nullptr;
+    }
+
+    double getTiempoPromedioEspera() const {
+        if (totalTiquetesAtendidos == 0) {
+            return 0.0;
+        }
+        return (double)sumaTiemposEspera / totalTiquetesAtendidos;
+    }
+
+    int getTotalTiquetesAtendidos() const {
+        return totalTiquetesAtendidos;
+    }
+
+    void reiniciarEstadisticas() {
+        totalTiquetesAtendidos = 0;
+        sumaTiemposEspera = 0;
+    }
+
     void print() {
         cout << "AREA: " << nombre << " (" << codigo << ")" << endl;
         cout << "Descripcion: " << descripcion << endl;
 
         cout << "Tiquetes en cola: " << cola->getSize() << endl;
+        cout << "Tiquetes atendidos (historial): " << totalTiquetesAtendidos << endl;
+        cout << "Tiempo promedio espera: " << getTiempoPromedioEspera() << " segundos" << endl;
 
         cout << "\n--- Ventanillas ---" << endl;
         for (int i = 0; i < ventanillasCount; i++) {
@@ -87,7 +136,8 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const Area& a) {
         os << "(Area: " << a.nombre
             << ", Codigo: " << a.codigo
-            << ", En cola: " << a.cola->getSize() << ")";
+            << ", En cola: " << a.cola->getSize() << ")" 
+            << ", Promedio espera: " << a.getTiempoPromedioEspera() << "s)";
         return os;
     }
 };

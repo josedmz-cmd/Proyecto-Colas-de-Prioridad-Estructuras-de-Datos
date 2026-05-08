@@ -77,8 +77,8 @@ public:
 		incrementar(ventanillas, nomVentanilla);
 	}
 
-	void getTiqueteServicio(const string& servicio) {
-		getValor(servicios, servicio);
+	int getTiqueteServicio(const string& servicio) {
+		return getValor(servicios, servicio);
 	}
 
 	int getTiqueteUsuario(const string& usuario) {
@@ -105,13 +105,11 @@ public:
 		cout << "Tiempo promedio por Area:" << endl;
 		if (numAreas == 0) {
 			cout << "No hay areas registradas.";
-		}
-		else {
+		} else {
 			for (int i = 0; i < numAreas; i++) {
 				if (areasArray[i] != nullptr) {
-					//Hay que hacer un getter que devuelva el tiempo promedio de espera
-					//Se necesita getter para codigo y descripcion
-					//cout << " " << areasArray[i]->getCodigo() << " - " << areasArray[i]->getDescripcion() << endl;
+					double promedio = areasArray[i]->getTiempoPromedioEspera();
+					cout << " " << areasArray[i]->getCodigo() << " - " << areasArray[i]->getDescripcion() << ": " << promedio << " segundos" << endl;
 				}
 			}
 		}
@@ -122,8 +120,8 @@ public:
 		} else {
 			for (int i = 0; i < numAreas; i++) {
 				if (areasArray[i] != nullptr) {
-					//int dispensados = getTiqueteArea(areasArray{i}->getCodigo());
-					//cout << " " << areasArray[i]->getCodigo() << " - " << areasArray[i]->getDescripcion() << ": " << dispensados << " tiquetes" << endl;
+					int dispensados = getTiqueteArea(areasArray[i]->getCodigo());
+					cout << " " << areasArray[i]->getCodigo() << " - " << areasArray[i]->getDescripcion() << ": " << dispensados << " tiquetes" << endl;
 				}
 			}
 		}
@@ -135,8 +133,15 @@ public:
 			bool hayVentanillas = false;
 			for (int i = 0; i < numAreas; i++) {
 				if (areasArray[i] != nullptr) {
-					//cout << "Área " << areasArray[i]->getCodigo() << ":" << endl;
-					hayVentanillas = true;
+					for (int j = 0; j < areasArray[i]->getNumVentanillas(); j++) {
+						Ventanilla* v = areasArray[i]->getVentanilla(j);
+						if (v != nullptr) {
+							hayVentanillas = true;
+							int atendidos = getTiqueteVentanilla(v->getNombre());
+							cout << "   " << v->getNombre()
+								<< ": " << atendidos << " tiquetes" << endl;
+						}
+					}
 				}
 			}
 			if (!hayVentanillas) {
@@ -150,8 +155,8 @@ public:
 		} else {
 			for (int i = 0; i < numServicios; i++) {
 				if (serviciosArray[i] != nullptr) {
-					//int solicitados = getTiqueteServicio(serviciosArray[i]->getDescripcion());
-					//cout << " " << serviciosArray[i]->getDescripcion() << ": " << solicitados << " tiquetes" << endl;
+					int solicitados = getTiqueteServicio(serviciosArray[i]->getDescripcion());
+					cout << " " << serviciosArray[i]->getDescripcion() << ": " << solicitados << " tiquetes" << endl;
 				}
 			}
 		}

@@ -66,6 +66,18 @@ public:
         return tiempoEspera;
     }
 
+    time_t getHoraSolicitud() const {
+        return horaSolicitado;
+    }
+
+    time_t getHoraAtendido() const {
+        return horaAtendido;
+    }
+
+    void setHoraAtendido(time_t hora) {
+        horaAtendido = hora;
+    }
+
     void printTime(time_t t) const {
         if (t == 0) {
             cout << "N/A";
@@ -103,4 +115,4 @@ public:
     }
 };
 
-int Tiquete::consecutivo = 0;
+int Tiquete::consecutivo = 100;

@@ -12,18 +12,21 @@ private:
     string nombre;
     bool ocupada;
     Tiquete* tiqueteActual;
+    int totalAtendidos;
 
 public:
     Ventanilla() {
         nombre = "";
         ocupada = false;
         tiqueteActual = nullptr;
+        totalAtendidos = 0;
     }
 
     Ventanilla(string nombre) {
         this->nombre = nombre;
         ocupada = false;
         tiqueteActual = nullptr;
+        totalAtendidos = 0;
     }
 
     ~Ventanilla() {}
@@ -35,6 +38,7 @@ public:
         }
         tiqueteActual = t;
         ocupada = true;
+        totalAtendidos++;
         if (tiqueteActual != nullptr) {
             tiqueteActual->atender();
         }
@@ -57,9 +61,14 @@ public:
         return tiqueteActual;
     }
 
+    int getTotalAtendidos() const {
+        return totalAtendidos;
+    }
+
     void print() const {
         cout << "VENTANILLA: " << nombre << endl;
         cout << "ESTADO: " << (ocupada ? "OCUPADA" : "LIBRE") << endl;
+        cout << "TOTAL ATENDIDOS: " << totalAtendidos << endl;
         if (ocupada && tiqueteActual != nullptr) {
             cout << "TIQUETE ACTUAL:" << endl;
             tiqueteActual->print();
@@ -70,9 +79,14 @@ public:
         cout << "------------------------" << endl;
     }
 
+    string getNombre() const {
+        return nombre;
+    }
+
     friend std::ostream& operator<<(std::ostream& os, const Ventanilla& v) {
         os << "(Ventanilla: " << v.nombre
-            << ", Estado: " << (v.ocupada ? "Ocupada" : "Libre");
+            << ", Estado: " << (v.ocupada ? "Ocupada" : "Libre")
+            << ", Atendidos: " << v.totalAtendidos;
         if (v.ocupada && v.tiqueteActual != nullptr) {
             os << ", Tiquete: " << v.tiqueteActual->getCodigo();
         }
