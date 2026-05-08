@@ -40,7 +40,7 @@ public:
         horaSolicitado = time(nullptr);
         horaAtendido = 0;
         tiempoEspera = 0;
-        prioridadFinal = prioridadUsuario + prioridadServicio;
+        prioridadFinal = prioridadUsuario * 10 + prioridadServicio;
     }
 
     ~Tiquete() {}
