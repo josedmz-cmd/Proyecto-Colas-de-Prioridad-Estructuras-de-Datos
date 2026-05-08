@@ -45,7 +45,10 @@ public:
     }
 
     void liberar() {
-        tiqueteActual = nullptr;
+        if (tiqueteActual != nullptr) {
+            delete tiqueteActual;
+            tiqueteActual = nullptr;
+        }
         ocupada = false;
     }
 

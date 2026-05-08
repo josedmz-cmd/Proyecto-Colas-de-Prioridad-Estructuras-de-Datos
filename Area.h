@@ -32,7 +32,7 @@ public:
         cola = new Heap_Priority_Queue<Tiquete>();
         ventanillas = new Ventanilla[ventanillasCount];
         for (int i = 0; i < ventanillasCount; i++) {
-            ventanillas[i] = Ventanilla("V" + std::to_string(i + 1));
+            ventanillas[i] = Ventanilla(nombre + std::to_string(i + 1));
         }
     }
 
@@ -45,10 +45,10 @@ public:
         cola->insert(t, t.getPrioridadFinal());
     }
 
-    void atenderSiguiente() {
+    int atenderSiguiente() {
         if (cola->is_empty()) {
             cout << "No hay tiquetes en cola." << endl;
-            return;
+            return -1;
         }
 
         for (int i = 0; i < ventanillasCount; i++) {
@@ -62,11 +62,12 @@ public:
                 ventanillas[i].atenderTiquete(nuevo);
                 cout << "Asignado " << t.getCodigo()
                     << " a " << ventanillas[i].getNombre() << endl;
-                return;
+                return i;
             }
         }
 
         cout << "No hay ventanillas disponibles." << endl;
+        return -1;
     }
 
     void liberarVentanilla(int index) {
@@ -74,8 +75,12 @@ public:
             cout << "Indice invalido." << endl;
             return;
         }
-
+        if (!ventanillas[index].estaOcupada()) {
+            cout << "La ventanilla " << ventanillas[index].getNombre() << " ya esta libre." << endl;
+            return;
+        }
         ventanillas[index].liberar();
+        cout << "Ventanilla " << ventanillas[index].getNombre() << " liberada." << endl;
     }
 
     string getCodigo() const {
@@ -115,6 +120,37 @@ public:
     void reiniciarEstadisticas() {
         totalTiquetesAtendidos = 0;
         sumaTiemposEspera = 0;
+        while (!cola->is_empty()) {
+            cola->removeMin();
+        }
+        for (int i = 0; i < ventanillasCount; i++) {
+            if (ventanillas[i].estaOcupada()) {
+                ventanillas[i].liberar();
+            }
+        }
+    }
+
+    void modificarVentanillas(int nuevoNum) {
+        if (nuevoNum < 1) {
+            cout << "El numero de ventanillas debe ser al menos 1." << endl;
+            return;
+        }
+        if (nuevoNum == ventanillasCount) {
+            cout << "El numero de ventanillas ya es " << nuevoNum << "." << endl;
+            return;
+        }
+        Ventanilla* nuevasVentanillas = new Ventanilla[nuevoNum];
+        int minCount = (nuevoNum < ventanillasCount) ? nuevoNum : ventanillasCount;
+        for (int i = 0; i < minCount; i++) {
+            nuevasVentanillas[i] = ventanillas[i];
+        }
+        for (int i = ventanillasCount; i < nuevoNum; i++) {
+            nuevasVentanillas[i] = Ventanilla(codigo + std::to_string(i + 1));
+        }
+        delete[] ventanillas;
+        ventanillas = nuevasVentanillas;
+        ventanillasCount = nuevoNum;
+        cout << "Ventanillas modificadas. Ahora hay " << ventanillasCount << " ventanillas." << endl;
     }
 
     void print() {

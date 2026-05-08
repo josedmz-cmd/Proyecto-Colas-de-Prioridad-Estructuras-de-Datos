@@ -226,7 +226,9 @@ void modificarVentanillas() {
     mostrarAreas();
     int idx = leerEntero("Seleccione area (1-" + std::to_string(numAreas) + "): ", 1, numAreas);
     int nuevoNum = leerEntero("Nuevo numero de ventanillas: ", 1, 20);
+    areas[idx - 1]->modificarVentanillas(nuevoNum);
     cout << "Ventanillas modificadas." << endl;
+
 }
 
 void eliminarArea() {
@@ -406,7 +408,53 @@ void atenderTiquete() {
     }
     mostrarAreas();
     int idxArea = leerEntero("Seleccione area (1-" + std::to_string(numAreas) + "): ", 1, numAreas);
-    areas[idxArea - 1]->atenderSiguiente();
+    Area* area = areas[idxArea - 1];
+    cout << "\nVentanillas" << area->getCodigo() << endl;
+    for (int i = 0; i < area->getNumVentanillas(); i++) {
+        Ventanilla* v = area->getVentanilla(i);
+        if (v != nullptr) {
+            cout << i + 1 << ". " << v->getNombre()
+                << " - " << (v->estaOcupada() ? "Ocupada" : "Libre") << endl;
+        }
+    }
+    cout << endl;
+    cout << "\n1. Atender siguiente tiquete (primera ventanilla libre)" << endl;
+    cout << "2. Liberar una ventanilla" << endl;
+    cout << "3. Regresar" << endl;
+    int opcion = leerEntero("Seleccione opcion: ", 1, 3);
+    switch (opcion) {
+    case 1: {
+        int ventanillaIndex = area->atenderSiguiente();
+        if (ventanillaIndex != -1 && estadisticas != nullptr) {
+            Ventanilla* v = area->getVentanilla(ventanillaIndex);
+            if (v != nullptr) {
+                estadisticas->registrarTiqueteVentanilla(v->getNombre());
+            }
+        }
+        break;
+    }
+    case 2: {
+        cout << "\nVentanillas ocupadas" << endl;
+        bool hayOcupadas = false;
+        for (int i = 0; i < area->getNumVentanillas(); i++) {
+            Ventanilla* v = area->getVentanilla(i);
+            if (v != nullptr && v->estaOcupada()) {
+                cout << i + 1 << ". " << v->getNombre() << endl;
+                hayOcupadas = true;
+            }
+        }
+        if (!hayOcupadas) {
+            cout << "No hay ventanillas ocupadas para liberar." << endl;
+            presioneTeclaParaContinuar();
+            return;
+        }
+        int numVentanilla = leerEntero("\nSeleccione ventanilla a liberar: ", 1, area->getNumVentanillas());
+        area->liberarVentanilla(numVentanilla - 1);
+        break;
+    }
+    case 3:
+        break;
+    }
     presioneTeclaParaContinuar();
 }
 
