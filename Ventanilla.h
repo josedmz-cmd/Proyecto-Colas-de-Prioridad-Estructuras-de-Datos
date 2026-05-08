@@ -79,10 +79,6 @@ public:
         cout << "------------------------" << endl;
     }
 
-    string getNombre() const {
-        return nombre;
-    }
-
     friend std::ostream& operator<<(std::ostream& os, const Ventanilla& v) {
         os << "(Ventanilla: " << v.nombre
             << ", Estado: " << (v.ocupada ? "Ocupada" : "Libre")
