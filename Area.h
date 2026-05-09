@@ -1,3 +1,134 @@
+/*
+    Jared Andre Hemmings Chinchilla
+    José Daniel Mora Zúñiga
+    CLASE AREA
+    
+    DESCRIPCIÓN:
+    La clase Area representa una sección o departamento dentro de un sistema
+    de gestión de atención de usuarios.
+
+    Su función principal es administrar:
+    - Los tiquetes en espera.
+    - Las ventanillas disponibles.
+    - La atención de usuarios.
+    - Las estadísticas de atención.
+
+    Cada área posee una cola de prioridad donde los tiquetes son organizados
+    según su prioridad final, permitiendo atender primero los casos más
+    importantes.
+
+    FUNCIONAMIENTO
+
+    1. CREACIÓN DEL ÁREA
+       - Al crear un objeto Area se deben proporcionar:
+            * Nombre del área.
+            * Código identificador.
+            * Descripción.
+            * Cantidad de ventanillas.
+       - Además:
+            * Se crea automáticamente una cola de prioridad.
+            * Se generan las ventanillas del área.
+            * Se inicializan las estadísticas.
+
+    2. GESTIÓN DE TIQUETES
+       - Los tiquetes se almacenan en una Heap Priority Queue.
+       - Cada tiquete se inserta usando su prioridad final.
+       - Esto permite que:
+            * Los tiquetes más prioritarios sean atendidos primero.
+
+    3. ATENCIÓN DE TIQUETES
+       - El método atenderSiguiente():
+            * Busca una ventanilla libre.
+            * Extrae el tiquete de mayor prioridad.
+            * Calcula el tiempo de espera.
+            * Actualiza estadísticas.
+            * Asigna el tiquete a la ventanilla.
+       - Si:
+            * No hay tiquetes -> muestra mensaje.
+            * No hay ventanillas libres -> muestra mensaje.
+
+    4. MANEJO DE VENTANILLAS
+       - Se pueden:
+            * Liberar ventanillas.
+            * Consultar ventanillas.
+            * Modificar la cantidad de ventanillas.
+
+    5. ESTADÍSTICAS
+       - El área mantiene:
+            * Total de tiquetes atendidos.
+            * Suma total de tiempos de espera.
+            * Tiempo promedio de espera.
+
+    6. REINICIO DEL SISTEMA
+       - El método reiniciarEstadisticas():
+            * Limpia la cola.
+            * Reinicia estadísticas.
+            * Libera todas las ventanillas.
+
+    7. VISUALIZACIÓN
+       - El método print() imprime toda la información del área.
+       - El operador << permite imprimir el objeto usando cout.
+
+    MÉTODOS PRINCIPALES Y LO QUE DEVUELVEN
+
+    agregarTiquete(Tiquete t)
+        -> No devuelve nada (void).
+        -> Inserta un tiquete en la cola de prioridad.
+
+    atenderSiguiente()
+        -> Devuelve un int.
+        -> Retorna el índice de la ventanilla que atendió el tiquete.
+        -> Retorna -1 si no se pudo atender.
+
+    liberarVentanilla(int index)
+        -> No devuelve nada (void).
+        -> Libera la ventanilla indicada.
+
+    getCodigo()
+        -> Devuelve un string.
+        -> Retorna el código del área.
+
+    getDescripcion()
+        -> Devuelve un string.
+        -> Retorna la descripción del área.
+
+    getNombre()
+        -> Devuelve un string.
+        -> Retorna el nombre del área.
+
+    getNumVentanillas()
+        -> Devuelve un int.
+        -> Retorna la cantidad de ventanillas.
+
+    getVentanilla(int i)
+        -> Devuelve un Ventanilla*.
+        -> Retorna un puntero a la ventanilla indicada.
+
+    getTiempoPromedioEspera()
+        -> Devuelve un double.
+        -> Retorna el promedio de espera de los usuarios.
+
+    getTotalTiquetesAtendidos()
+        -> Devuelve un int.
+        -> Retorna el total de tiquetes atendidos.
+
+    reiniciarEstadisticas()
+        -> No devuelve nada (void).
+        -> Reinicia estadísticas, cola y ventanillas.
+
+    modificarVentanillas(int nuevoNum)
+        -> No devuelve nada (void).
+        -> Cambia la cantidad de ventanillas del área.
+
+    print()
+        -> No devuelve nada (void).
+        -> Imprime toda la información del área.
+
+    operator<<
+        -> Devuelve un ostream&.
+        -> Permite imprimir el objeto usando cout.
+*/
+
 #pragma once
 #include <iostream>
 #include <string>
