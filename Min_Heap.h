@@ -1,3 +1,135 @@
+/*
+
+Jared Andre Hemmings Chinchilla
+José Daniel Mora Zúñiga
+
+    CLASE MIN_HEAP
+    La clase Min_Heap implementa una estructura de datos de montículo mínimo (heap binario)
+    donde el elemento con el valor más pequeño se encuentra siempre en la raíz.
+
+    FUNCIONAMIENTO
+
+    1. ESTRUCTURA DEL HEAP
+       - Se implementa como un arreglo dinámico (elements) donde:
+            * El índice 0 contiene la raíz (elemento más pequeño).
+            * Para un nodo en posición i:
+                - Hijo izquierdo: 2*i + 1
+                - Hijo derecho: 2*i + 2
+                - Padre: (i - 1) / 2
+
+       - Propiedad del heap mínimo:
+            elements[parent(i)] <= elements[i] para todo i > 0
+
+    2. INSERCIÓN (insert)
+       - Se agrega el nuevo elemento al final del arreglo.
+       - Se aplica "cascadeUp" para reordenar hacia arriba:
+            * Si el elemento es menor que su padre, intercambian.
+            * Se repite hasta que la propiedad del heap se restablece.
+
+    3. ELIMINACIÓN DEL MÍNIMO (removeFirts)
+       - Se intercambia la raíz con el último elemento.
+       - Se reduce el tamaño.
+       - Se aplica "cascadeDown" desde la raíz para reordenar hacia abajo:
+            * Se compara con el hijo más pequeño.
+            * Si el elemento es mayor que su hijo menor, intercambian.
+            * Se repite hasta que la propiedad del heap se restablece.
+
+    4. ELIMINACIÓN POR POSICIÓN (remove)
+       - Elimina el elemento en una posición específica.
+       - Útil para implementaciones avanzadas.
+
+    5. CONSULTAS
+       - first(): Retorna la raíz (elemento más pequeño) sin eliminar.
+       - getSize(): Retorna la cantidad de elementos.
+       - isEmpty(): Verifica si el heap está vacío.
+
+    MÉTODOS PRINCIPALES Y LO QUE DEVUELVEN
+
+    Constructor
+        Min_Heap(int max = 1024)
+        -> Crea un heap vacío con capacidad máxima opcional.
+        -> La capacidad por defecto es 1024.
+
+    Destructor
+        ~Min_Heap()
+        -> Libera la memoria del arreglo dinámico.
+
+    insert(E element)
+        -> No devuelve nada (void).
+        -> Inserta un nuevo elemento en el heap.
+        -> Lanza runtime_error si el heap está lleno.
+        -> Mantiene la propiedad de heap mínimo.
+
+    first()
+        -> Devuelve un elemento de tipo E.
+        -> Retorna el elemento más pequeño (raíz) sin eliminarlo.
+        -> Lanza runtime_error si el heap está vacío.
+
+    removeFirts()
+        -> Devuelve un elemento de tipo E.
+        -> Elimina y retorna el elemento más pequeño (raíz).
+        -> Lanza runtime_error si el heap está vacío.
+        -> Reordena el heap para mantener la propiedad.
+
+    remove(int pos)
+        -> Devuelve un elemento de tipo E.
+        -> Elimina y retorna el elemento en la posición especificada.
+        -> Lanza runtime_error si el heap está vacío o índice inválido.
+        -> Reordena el heap después de la eliminación.
+
+    getSize()
+        -> Devuelve un int.
+        -> Retorna la cantidad de elementos actualmente en el heap.
+
+    isEmpty()
+        -> Devuelve un bool.
+        -> Retorna true si el heap está vacío, false en caso contrario.
+
+    clear()
+        -> No devuelve nada (void).
+        -> Elimina todos los elementos del heap.
+        -> NOTA: Actualmente tiene un error (size == 0 en lugar de size = 0).
+
+    print()
+        -> No devuelve nada (void).
+        -> Imprime el contenido del heap en formato [elem1, elem2, ...].
+
+    MÉTODOS PRIVADOS AUXILIARES
+
+    leftChild(int pos)
+        -> Devuelve un int.
+        -> Retorna el índice del hijo izquierdo (2*pos + 1).
+
+    rightChild(int pos)
+        -> Devuelve un int.
+        -> Retorna el índice del hijo derecho (2*pos + 2).
+
+    parent(int pos)
+        -> Devuelve un int.
+        -> Retorna el índice del padre ((pos - 1) / 2).
+
+    swap(int pos1, int pos2)
+        -> No devuelve nada (void).
+        -> Intercambia los elementos en las posiciones dadas.
+
+    cascadeUp(int pos)
+        -> No devuelve nada (void).
+        -> Reordena hacia arriba desde la posición dada.
+        -> Se usa después de una inserción.
+
+    isLeaf(int pos)
+        -> Devuelve un bool.
+        -> Retorna true si la posición es una hoja (sin hijos).
+
+    minChild(int pos)
+        -> Devuelve un int.
+        -> Retorna el índice del hijo con menor valor.
+
+    cascadeDown(int pos)
+        -> No devuelve nada (void).
+        -> Reordena hacia abajo desde la posición dada.
+        -> Se usa después de una eliminación.
+*/
 #pragma once
 #include <stdexcept>
 #include <iostream>
