@@ -1,5 +1,200 @@
 // Proyecto-Colas-de-Prioridad-Estructuras-de-Datos.cpp : Este archivo contiene la función "main". La ejecución del programa comienza y termina ahí.
 //
+/*
+Jared Andre Hemmings Chinchilla
+José Daniel Mora Zúñiga
+
+    PROGRAMA PRINCIPAL - SISTEMA DE ADMINISTRACIÓN DE COLAS
+
+    FUNCIONAMIENTO GENERAL
+
+    El sistema permite:
+    1. Gestionar tipos de usuarios (con prioridades)
+    2. Gestionar áreas y sus ventanillas
+    3. Gestionar servicios (asociados a áreas)
+    4. Solicitar tiquetes (calculando prioridad final)
+    5. Atender tiquetes en ventanillas
+    6. Liberar ventanillas manualmente
+    7. Ver estadísticas del sistema
+    8. Ver estado actual de colas y ventanillas
+
+    CONSTANTES GLOBALES
+
+    MAX_AREAS = 20        → Máximo de áreas en el sistema
+    MAX_SERVICIOS = 100   → Máximo de servicios en el sistema
+    MAX_USUARIOS = 50     → Máximo de tipos de usuario
+
+    VARIABLES GLOBALES
+
+    areas[]     → Arreglo de punteros a Area
+    numAreas    → Contador actual de áreas
+
+    servicios[] → Arreglo de punteros a Servicios
+    numServicios → Contador actual de servicios
+
+    usuarios[]  → Arreglo de punteros a Usuario
+    numUsuarios → Contador actual de usuarios
+
+    estadisticas → Puntero a Estadisticas (inicializado en main)
+
+    FUNCIONES DE VALIDACIÓN DE ENTRADA
+
+    leerString(mensaje)
+        -> Lee una línea completa con getline().
+        -> Retorna string con el texto ingresado.
+        -> No valida el contenido.
+
+    leerEntero(prompt, min, max)
+        -> Solicita un número entre min y max.
+        -> Valida que sea número y esté en rango.
+        -> Retorna int validado.
+
+    leerChar(prompt, opciones)
+        -> Solicita un carácter (s/n, etc.).
+        -> Convierte mayúsculas a minúsculas automáticamente.
+        -> Retorna char validado.
+
+        FUNCIONES DE INTERFAZ DE USUARIO
+
+    presioneTeclaParaContinuar()
+        -> Pausa la ejecución hasta que el usuario presione Enter.
+
+    limpiarPantalla()
+        -> Escribe 50 saltos de línea (simula limpieza de pantalla).
+
+    confirmarAccion(mensaje)
+        -> Pregunta al usuario (s/n).
+        -> Retorna true si respuesta es 's'.
+
+    FUNCIONES DE ORDENAMIENTO
+
+    ordenarUsuarios()
+        -> Ordena tipos de usuario por prioridad (menor número = mayor prioridad).
+        -> Usa método de burbuja.
+
+    FUNCIONES DE BÚSQUEDA
+
+    buscarUsuario(descripcion)    buscarServicio(descripcion)    buscarArea(codigo)
+        -> Buscan por descripción o código.
+        -> Retornan índice (0..n-1) o -1 si no existe.
+
+    getAreaPorIndice(indice)
+        -> Valida índice y retorna puntero al área.
+
+    FUNCIONES DE GESTIÓN - USUARIOS
+
+    mostrarUsuarios()
+        -> Muestra lista
+
+    agregarUsuario()
+        -> Crea nuevo 
+        -> Ordena automático
+
+    eliminarUsuario()
+        -> Elimina existente
+        -> Confirma acción
+
+    FUNCIONES DE GESTIÓN - ÁREAS
+
+    mostrarAreas()         
+        -> Muestra lista   
+
+    agregarArea()          
+        -> Crea nueva         
+
+    eliminarArea()
+        -> Elimina área
+        -> Elimina servicios asociados
+
+    modificarVentanillas()
+        -> Cambia número de ventanillas de un área.
+        -> Llama a Area::modificarVentanillas().
+
+    FUNCIONES DE GESTIÓN - SERVICIOS
+
+    mostrarServicios()     
+        -> Muestra lista  
+
+    agregarServicio()      
+        -> Asocia a área      
+
+    eliminarServicio()
+        -> Confirma acción
+
+    reordenarServicios()
+        -> Cambia el orden de los servicios en la lista.
+        -> Orden configurable por el usuario (no automático por prioridad).
+
+    FUNCIONES DE SELECCIÓN
+
+    seleccionarUsuario()   seleccionarServicio()
+        -> Muestran lista al usuario.
+        -> Retornan descripción seleccionada o string vacío.
+
+    OPERACIONES PRINCIPALES
+
+    solicitarTiquete()
+        1. Selecciona tipo de usuario   
+        2. Selecciona servicio  
+        3. Busca área asociada al servicio 
+        4. Crea Tiquete con PT = PU * 10 + PS 
+        5. Agrega tiquete a la cola del área 
+        6. Registra estadísticas (servicio, usuario, área)
+        7. Muestra información del tiquete generado 
+
+    atenderTiquete()
+        1. Selecciona área 
+        2. Muestra ventanillas con estado (Libre/Ocupada)
+        3. Opciones:
+            - Atender en primera ventanilla libre 
+            - Liberar una ventanilla ocupada 
+            - Regresar
+        4. Registra estadística de ventanilla (si aplica)
+
+    limpiarColasYEstadisticas()
+        -> Limpia colas de tiquetes y reinicia contadores.
+        -> Usa confirmación del usuario.
+
+    estadoColas()
+        -> Muestra todas las áreas, sus colas y ventanillas.
+        -> Usa Area::print().
+
+    mostrarEstadisticas()
+        -> Muestra las 5 estadísticas requeridas.
+        -> Usa Estadisticas::printStats().
+
+    MENÚS DEL SISTEMA
+
+    MenuPrincipal() (función Menu())
+        1. Estado de las colas  → estadoColas()
+        2. Tiquetes             → MenuTiquete()
+        3. Atender Tiquete      → atenderTiquete() 
+        4. Administración       → MenuAdministracion() 
+        5. Estadísticas         → mostrarEstadisticas()
+        6. Salir                → Sale del programa
+
+     MenuTiquete()
+        1. Agregar Tiquete   → solicitarTiquete()
+        2. Regresar          → Vuelve al menú principal
+
+    MenuAdministracion()
+        1. Tipo de usuario   → MenuUsuario()
+        2. Areas             → MenuAreas()
+        3. Servicios         → MenuServicio()
+        4. Limpiar           → limpiarColasYEstadisticas()
+        5. Regresar          → Vuelve al menú principal
+
+    main()
+        1. new Estadisticas() - Crea objeto de estadísticas
+        2. Carga datos de ejemplo: 
+            - Usuarios: Regular, Adulto Mayor, Discapacitado 
+            - Áreas: C - Cajas (3 ventanillas) 
+            - Áreas: S - Servicio al Cliente (2 ventanillas)
+            - Servicios: Comprar, Cambiar, Solicitar, Reclamo 
+        3. Menu() - Inicia el bucle principal
+        4. Libera toda la memoria (delete)
+        5. Retorna 0
+*/
 
 #include <iostream>
 #include <string>
