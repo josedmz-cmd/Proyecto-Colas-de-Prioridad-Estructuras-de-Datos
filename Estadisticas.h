@@ -1,3 +1,123 @@
+/*
+Jared Andre Hemmings Chinchilla
+José Daniel Mora Zúñiga
+
+    CLASE ESTADISTICAS
+    
+    DESCRIPCIÓN:
+    La clase Estadisticas se encarga de registrar, almacenar y mostrar
+    información estadística relacionada con el funcionamiento del sistema
+    de atención de tiquetes.
+
+    Esta clase permite llevar el control de:
+    - Cantidad de tiquetes por servicio.
+    - Cantidad de tiquetes por tipo de usuario.
+    - Cantidad de tiquetes por área.
+    - Cantidad de tiquetes atendidos por ventanilla.
+    - Tiempo promedio de espera por área.
+
+    Para almacenar la información utiliza listas dinámicas de pares
+    (Pair<string, int>) donde:
+        key   -> nombre o código
+        value -> cantidad registrada
+
+    FUNCIONAMIENTO
+
+    1. ALMACENAMIENTO DE DATOS
+       - Cada categoría estadística posee una lista independiente:
+            * servicios
+            * usuarios
+            * areas
+            * ventanillas
+       - Cada vez que ocurre un evento:
+            * Se busca si ya existe el registro.
+            * Si existe, se incrementa el contador.
+            * Si no existe, se crea un nuevo registro.
+
+    2. REGISTRO DE INFORMACIÓN
+       - Los métodos registrarTiquete permiten almacenar estadísticas
+         automáticamente.
+       - Ejemplos:
+            registrarTiqueteServicio("Pago");
+            registrarTiqueteArea("CAJ");
+            registrarTiqueteUsuario("Adulto Mayor");
+
+    3. CONSULTA DE DATOS
+       - Los métodos getTiquete permiten obtener la cantidad registrada
+         para cada categoría.
+
+    4. LIMPIEZA DE ESTADÍSTICAS
+       - El método clearStats():
+            * Elimina todos los registros almacenados.
+            * Reinicia completamente las estadísticas.
+
+    5. IMPRESIÓN DE ESTADÍSTICAS
+       - El método printStats() muestra:
+            * Tiempo promedio por área.
+            * Tiquetes dispensados por área.
+            * Tiquetes atendidos por ventanilla.
+            * Tiquetes solicitados por servicio.
+            * Tiquetes emitidos por tipo de usuario.
+
+    FUNCIONES PRIVADAS Y SU FUNCIONAMIENTO
+
+    buscarPos()
+        -> Busca una clave dentro de una lista.
+        -> Retorna la posición donde se encuentra.
+        -> Retorna -1 si no existe.
+
+    getValor()
+        -> Obtiene el valor asociado a una clave.
+        -> Retorna la cantidad registrada.
+        -> Retorna 0 si no existe.
+
+    incrementar()
+        -> Incrementa el contador asociado a una clave.
+        -> Si no existe, crea un nuevo registro.
+
+    MÉTODOS PRINCIPALES Y LO QUE DEVUELVEN
+
+    registrarTiqueteServicio(const string& descServicio)
+        -> No devuelve nada (void).
+        -> Registra un tiquete asociado a un servicio.
+
+    registrarTiqueteUsuario(const string& descUsuario)
+        -> No devuelve nada (void).
+        -> Registra un tiquete asociado a un usuario.
+
+    registrarTiqueteArea(const string& codArea)
+        -> No devuelve nada (void).
+        -> Registra un tiquete asociado a un área.
+
+    registrarTiqueteVentanilla(const string& nomVentanilla)
+        -> No devuelve nada (void).
+        -> Registra un tiquete atendido por una ventanilla.
+
+    getTiqueteServicio(const string& servicio)
+        -> Devuelve un int.
+        -> Retorna la cantidad de tiquetes de un servicio.
+
+    getTiqueteUsuario(const string& usuario)
+        -> Devuelve un int.
+        -> Retorna la cantidad de tiquetes de un tipo de usuario.
+
+    getTiqueteArea(const string& area)
+        -> Devuelve un int.
+        -> Retorna la cantidad de tiquetes de un área.
+
+    getTiqueteVentanilla(const string& ventanilla)
+        -> Devuelve un int.
+        -> Retorna la cantidad de tiquetes atendidos por una ventanilla.
+
+    clearStats()
+        -> No devuelve nada (void).
+        -> Elimina todas las estadísticas almacenadas.
+
+    printStats()
+        -> No devuelve nada (void).
+        -> Imprime todas las estadísticas del sistema.
+*/
+
 #pragma once
 #include <iostream>
 #include <string>
